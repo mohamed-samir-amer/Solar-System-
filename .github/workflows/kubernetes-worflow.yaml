@@ -1,4 +1,4 @@
-name: Solar System Workflow
+name: Solar System Workflow-Project
 
 
 on:
@@ -24,16 +24,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Docker Hub Login
-      uses: docker/login-action@v2.2.0
+      uses: docker/login-action@v3
       with:
-      username: ${{ vars.DOCKERHUB_USERNAME }}
-      password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
     - name: Build Docker Image for Testing
       uses: docker/build-push-action@v4
       with:
-      context: .
-      push: true
-      tags: ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
+        context: .
+        push: true
+        tags: ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
   dev-deploy:
     name: Deploy to Dev Env
     runs-on: ubuntu-latest
@@ -50,8 +50,8 @@ jobs:
     - name: Set Kubeconfig Context
       uses: azure/k8s-set-context@v3
       with:
-      method: kubeconfig
-      kubeconfig: ${{ secrets.KUBECONFIG }}
+        method: kubeconfig
+        kubeconfig: ${{ secrets.KUBECONFIG }}
 
     - name: Fetch Kubernetes Cluster Details
       run: |
@@ -65,7 +65,7 @@ jobs:
             tokenPrefix: '_{_'
             tokenSuffix: '_}_'
             files:
-            - kubernetes/development/*.yaml
+             kubernetes/development/*.yaml
       env:
             NAMESPACE: ${{ vars.NAMESPACE }}
             REPLICAS: ${{ vars.REPLICAS }}
