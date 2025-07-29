@@ -42,7 +42,7 @@ jobs:
       MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
 
     steps:
-      
+
     - name: Checkout repository
       uses: actions/checkout@v3
 
@@ -80,6 +80,10 @@ jobs:
     - name: Show processed manifests
       run: cat kubernetes/development/*.yaml
 
+    - name: Create Namespace if not exists
+      run: |
+             kubectl get namespace ${{ vars.NAMESPACE }} || \
+             kubectl create namespace ${{ vars.NAMESPACE }}
 
     - name: Create MongoDB secret
       run: |
